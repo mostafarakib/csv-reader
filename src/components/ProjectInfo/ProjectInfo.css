@@ -1,0 +1,16 @@
+.project-info-form {
+  width: 35%;
+}
+.equal-input-container {
+  display: flex;
+  margin: 5px 0;
+}
+.equal-input-container input,
+.equal-input-container textarea {
+  flex-grow: 1;
+  margin-left: 5px;
+}
+.submittedValue {
+  font-weight: 400;
+  font-size: 15px;
+}
