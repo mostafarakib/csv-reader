@@ -1,36 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
 import ProjectInfo from "../ProjectInfo/ProjectInfo";
 import SubmittedInfo from "../ProjectInfo/SubmittedInfo";
 import MinMaxForm from "./MinMaxForm";
 
-const HomePage = (props) => {
-  const {
-    minX,
-    setMinX,
-    minY,
-    setMinY,
-    minZ,
-    setMinZ,
-    maxX,
-    setMaxX,
-    maxY,
-    setMaxY,
-    maxZ,
-    setMaxZ,
-    setData,
-  } = props;
+const HomePage = ({ data, setData }) => {
   const [isSubmittedNext, setIsSubmittedNext] = useState(false);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const [pName, setPName] = useState("");
   const [client, setClient] = useState("");
   const [contractor, setContractor] = useState("");
   const [desc, setDesc] = useState("");
+  const [minX, setMinX] = useState(0);
+  const [minY, setMinY] = useState(0);
+  const [minZ, setMinZ] = useState(0);
+  const [maxX, setMaxX] = useState(0);
+  const [maxY, setMaxY] = useState(0);
+  const [maxZ, setMaxZ] = useState(0);
+
+  useEffect(() => {
+    const defaultData = [
+      { KP: "0", X: minX, Y: minY, Z: minZ },
+      { KP: "1", X: maxX, Y: maxY, Z: maxZ },
+    ];
+    if (!isFileLoaded) {
+      setData(defaultData);
+    }
+  }, [isFileLoaded, minX, maxX, minY, maxY, minZ, maxZ]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     Papa.parse(file, {
       header: true,
       complete: (results) => {
+        setIsFileLoaded(true);
         const filteredData = results.data.filter(
           (item) =>
             item.X !== undefined && item.Y !== undefined && item.Z !== undefined
@@ -60,6 +63,7 @@ const HomePage = (props) => {
       },
     });
   };
+  console.log(minX, maxX, minY, maxY, minZ, maxZ);
   return (
     <div
       className="px-5 pt-4"
