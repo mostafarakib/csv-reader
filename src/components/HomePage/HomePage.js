@@ -3,6 +3,8 @@ import Papa from "papaparse";
 import ProjectInfo from "../ProjectInfo/ProjectInfo";
 import SubmittedInfo from "../ProjectInfo/SubmittedInfo";
 import MinMaxForm from "./MinMaxForm";
+import Chart from "chart.js/auto";
+import { Line } from "react-chartjs-2";
 
 const HomePage = ({ data, setData }) => {
   const [isSubmittedNext, setIsSubmittedNext] = useState(false);
@@ -63,11 +65,23 @@ const HomePage = ({ data, setData }) => {
       },
     });
   };
-  console.log(minX, maxX, minY, maxY, minZ, maxZ);
+
+  const chartData = {
+    labels: data.map((item) => item.KP),
+    datasets: [
+      {
+        label: "X Values",
+        data: data.map((item) => parseFloat(item.X)),
+        fill: false,
+        borderColor: "blue",
+      },
+    ],
+  };
+
   return (
     <div
       className="px-5 pt-4"
-      style={{ backgroundColor: "rgb(224, 255, 245)", minHeight: "100vh" }}
+      style={{ backgroundColor: "#aac8c3", minHeight: "100vh" }}
     >
       <div>
         {isSubmittedNext ? (
@@ -114,6 +128,7 @@ const HomePage = ({ data, setData }) => {
           />
         </div>
       ) : null}
+      {isFileLoaded ? <Line data={chartData} /> : null}
     </div>
   );
 };
