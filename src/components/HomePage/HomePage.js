@@ -5,20 +5,19 @@ import SubmittedInfo from "../ProjectInfo/SubmittedInfo";
 import MinMaxForm from "./MinMaxForm";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import { useDataContext } from "../../Context/DataContext";
+import { useIsSubmittedNextContext } from "../../Context/NextButtonContext";
 
-const HomePage = ({ data, setData }) => {
-  const [isSubmittedNext, setIsSubmittedNext] = useState(false);
-  const [isFileLoaded, setIsFileLoaded] = useState(false);
+const HomePage = () => {
+  const { isSubmittedNext, setIsSubmittedNext, isFileLoaded, setIsFileLoaded } =
+    useIsSubmittedNextContext();
+  const { data, setData, minMaxValues, setMinMaxValues } = useDataContext();
   const [pName, setPName] = useState("");
   const [client, setClient] = useState("");
   const [contractor, setContractor] = useState("");
   const [desc, setDesc] = useState("");
-  const [minX, setMinX] = useState(0);
-  const [minY, setMinY] = useState(0);
-  const [minZ, setMinZ] = useState(0);
-  const [maxX, setMaxX] = useState(0);
-  const [maxY, setMaxY] = useState(0);
-  const [maxZ, setMaxZ] = useState(0);
+
+  const { minX, maxX, minY, maxY, minZ, maxZ } = minMaxValues;
 
   useEffect(() => {
     const defaultData = [
@@ -53,13 +52,14 @@ const HomePage = ({ data, setData }) => {
         const maximumY = Math.max(...getYValues);
         const maximumZ = Math.max(...getZValues);
 
-        setMinX(minimumX);
-        setMinY(minimumY);
-        setMinZ(minimumZ);
-
-        setMaxX(maximumX);
-        setMaxY(maximumY);
-        setMaxZ(maximumZ);
+        setMinMaxValues({
+          minX: minimumX,
+          minY: minimumY,
+          minZ: minimumZ,
+          maxX: maximumX,
+          maxY: maximumY,
+          maxZ: maximumZ,
+        });
 
         setData(filteredData);
       },
@@ -112,20 +112,7 @@ const HomePage = ({ data, setData }) => {
             onChange={handleFileUpload}
             style={{ width: "49%" }}
           />
-          <MinMaxForm
-            minX={minX}
-            setMinX={setMinX}
-            minY={minY}
-            setMinY={setMinY}
-            minZ={minZ}
-            setMinZ={setMinZ}
-            maxX={maxX}
-            setMaxX={setMaxX}
-            maxY={maxY}
-            setMaxY={setMaxY}
-            maxZ={maxZ}
-            setMaxZ={setMaxZ}
-          />
+          <MinMaxForm />
         </div>
       ) : null}
       {isFileLoaded ? <Line data={chartData} /> : null}

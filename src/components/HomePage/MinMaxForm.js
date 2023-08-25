@@ -1,20 +1,15 @@
 import React from "react";
+import { useDataContext } from "../../Context/DataContext";
 
-const MinMaxForm = (props) => {
-  const {
-    minX,
-    setMinX,
-    minY,
-    setMinY,
-    minZ,
-    setMinZ,
-    maxX,
-    setMaxX,
-    maxY,
-    setMaxY,
-    maxZ,
-    setMaxZ,
-  } = props;
+const MinMaxForm = () => {
+  const { minMaxValues, setMinMaxValues } = useDataContext();
+
+  const handleMinMaxChange = (key, value) => {
+    setMinMaxValues((prevMinMaxValues) => ({
+      ...prevMinMaxValues,
+      [key]: value,
+    }));
+  };
   return (
     <form className="row mt-4">
       <div className="col-6">
@@ -23,8 +18,8 @@ const MinMaxForm = (props) => {
           <input
             type="number"
             name="minX"
-            value={minX}
-            onChange={(e) => setMinX(e.target.value)}
+            value={minMaxValues.minX}
+            onChange={(e) => handleMinMaxChange("minX", e.target.value)}
           />
         </div>
         <div className="equal-input-container my-2">
@@ -32,8 +27,8 @@ const MinMaxForm = (props) => {
           <input
             type="number"
             name="minY"
-            value={minY}
-            onChange={(e) => setMinY(e.target.value)}
+            value={minMaxValues.minY}
+            onChange={(e) => handleMinMaxChange("minY", e.target.value)}
           />
         </div>
         <div className="equal-input-container my-2">
@@ -41,8 +36,8 @@ const MinMaxForm = (props) => {
           <input
             type="number"
             name="minZ"
-            value={minZ}
-            onChange={(e) => setMinZ(e.target.value)}
+            value={minMaxValues.minZ}
+            onChange={(e) => handleMinMaxChange("minZ", e.target.value)}
           />
         </div>
       </div>
@@ -52,8 +47,8 @@ const MinMaxForm = (props) => {
           <input
             type="number"
             name="maxX"
-            value={maxX}
-            onChange={(e) => setMaxX(e.target.value)}
+            value={minMaxValues.maxX}
+            onChange={(e) => handleMinMaxChange("maxX", e.target.value)}
           />
         </div>
         <div className="equal-input-container my-2">
@@ -61,8 +56,8 @@ const MinMaxForm = (props) => {
           <input
             type="number"
             name="maxY"
-            value={maxY}
-            onChange={(e) => setMaxY(e.target.value)}
+            value={minMaxValues.maxY}
+            onChange={(e) => handleMinMaxChange("maxY", e.target.value)}
           />
         </div>
         <div className="equal-input-container my-2">
@@ -70,8 +65,8 @@ const MinMaxForm = (props) => {
           <input
             type="number"
             name="maxZ"
-            value={maxZ}
-            onChange={(e) => setMaxZ(e.target.value)}
+            value={minMaxValues.maxZ}
+            onChange={(e) => handleMinMaxChange("maxZ", e.target.value)}
           />
         </div>
       </div>
